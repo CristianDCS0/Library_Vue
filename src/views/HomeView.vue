@@ -21,7 +21,7 @@ import RegisterView from '@/views/session/RegisterView.vue'
           <LoginView />
       </div>
       <div class="row-start-3 grid justify-items-end content-end p-5">
-        <p>by Cristian Cobaxin. &copy; 2025</p>
+        <p>by Cristian Cobaxin. &copy; {{ new Date().getFullYear() }} </p>
       </div>
     </div>
   </div>
