@@ -4,8 +4,10 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import {FormControl, FormField, FormItem, FormLabel, FormMessage, } from '@/components/ui/form'
 import {useAuthStore} from "@/stores/auth.ts"
+import {useAuthTest} from "@/stores/authTest.ts"
 import {useRouter} from 'vue-router'
-import {useToast} from '@/components/ui/toast/use-toast'
+import {format} from 'date-fns';
+import {es} from 'date-fns/locale';
 
 //shadcn
 import { Button } from '@/components/ui/button'
@@ -16,6 +18,7 @@ import { Input } from '@/components/ui/input'
 import {toast} from 'vue-sonner'
 
 const router = useRouter();
+const d = format(new Date(), 'PPPPp', {locale:es});
 
 const formSchema = toTypedSchema(z.object({
   name: z.string().min(2).max(50),
@@ -26,11 +29,17 @@ const formSchema = toTypedSchema(z.object({
 const form = useForm({ validationSchema: formSchema });
 
 const authStore = useAuthStore();
+const authTest = useAuthTest();
 const onSubmit = form.handleSubmit(async (values) => {
   try {
-    await authStore.Register(values);
-    toast('Registration successfully', {
-      description: 'redirect to dashboard'
+    //await authStore.Register(values);
+    await authTest.RegisterTest({
+      name: values.name,
+      email: values.email,
+      password: values.password
+    });
+    toast(`Registro exitoso: ${d}`, {
+      description: `Bienvenido: ${authTest.userTest.authUserTest}`,
     });
     router.push('/dashboard');
   } catch (error) {

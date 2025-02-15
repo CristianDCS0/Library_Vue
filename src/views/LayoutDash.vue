@@ -3,14 +3,16 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import AppSidebar from "@/components/ui/sidebar/AppSidebar.vue"
 import Separator  from "@/components/ui/separator/Separator.vue"
 import {useAuthStore} from '@/stores/auth.ts'
+import {useAuthTest} from '@/stores/authTest.ts'
 import { useColorMode } from '@vueuse/core'
 import { Skeleton } from '@/components/ui/skeleton'
 const authStore = useAuthStore();
+const authTest = useAuthTest();
 const mode = useColorMode()
 </script>
 
 <template>
-  <div  v-if="authStore.user">
+  <div  v-if="authStore.user || authTest.userTest">
     <SidebarProvider>
       <AppSidebar />
       <div class="flex flex-col h-screen w-full ml-2 mr-2">
