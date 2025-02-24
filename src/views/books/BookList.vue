@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useBookStore } from '@/stores/book';
-import {useBookTest} from '@/stores/bookTest.ts'
 import { onMounted } from 'vue'
 import {toast} from 'vue-sonner'
 
@@ -17,19 +16,17 @@ import { Button } from '@/components/ui/button'
 import { Trash2 } from 'lucide-vue-next'
 
 const bookStore = useBookStore();
-const bookTest = useBookTest();
 
 onMounted(async () => {
-  //await bookStore.BookList();
-  await bookTest.BookListTest();
+  await bookStore.BookList();
 });
 
-const onDelete = (title: string) => {
+const onDelete = (id: string, title: string) => {
   toast(`Are you sure?`, {
     description: `DELETE: ${title}`,
     action:{
       label: 'Delete',
-      onClick: async () => await bookTest.BookDeleteTest(title)
+      onClick: async () => await bookStore.BookDelete(id)
     }
   });
 }
@@ -37,11 +34,11 @@ const onDelete = (title: string) => {
 
 <template>
   <ScrollArea class="m-3 p-3">
-    <div v-if="bookStore.bookGetter || bookTest.bookGetter">
+    <div v-if="bookStore.bookGetter">
       <BookCreate />
       <Separator class="my-5"/>
       <div class="grid grid-cols-3 gap-3 min-w-min sm:grid-cols-4 sm:mr-2">
-        <Card v-for="b in bookTest.bookGetter" :key="b.id" class="mt-2 sm:p-0 sm:min-w-min">
+        <Card v-for="b in bookStore.bookGetter" :key="b.id" class="mt-2 sm:p-0 sm:min-w-min">
           <CardHeader>
             <CardTitle class="text-sm h-12 sm:h-10">
               {{ b.title }}
@@ -51,8 +48,7 @@ const onDelete = (title: string) => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-<!--            <img :src="`http://localhost:8000/storage/${b.img_book}`" class="h-24 w-40" alt="img" v-if="b.img_book"/>-->
-            <img :src="b.img_book" class="h-24 w-40" alt="img" v-if="b.img_book"/>
+            <img :src="`https://library-laravel-main-cnots4.laravel.cloud/storage/${b.img_book}`" class="h-24 w-40" alt="img" v-if="b.img_book"/>
             <p v-else>No image available</p>
           </CardContent>
           <CardFooter class="grid grid-flow-col justify-items-center">

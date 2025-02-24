@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {useBookStore} from '@/stores/book.ts'
-import {useBookTest} from '@/stores/bookTest.ts'
 import {formSchema } from '@/views/books/FormBook.ts'
 import { useForm } from 'vee-validate'
 
@@ -19,12 +18,10 @@ const form = useForm({
 });
 
 const bookStore = useBookStore();
-const bookTest = useBookTest();
 
 const onSubmit = form.handleSubmit(async(values) => {
   try{
-    //await bookStore.BookCreate(values);
-    await bookTest.BookCreateTest(values);
+    await bookStore.BookCreate(values);
     toast("Book created successfully", {
       description: `Book: ${values.title}`,
     });
