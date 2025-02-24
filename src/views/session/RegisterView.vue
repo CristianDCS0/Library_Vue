@@ -4,7 +4,6 @@ import { toTypedSchema } from '@vee-validate/zod'
 import * as z from 'zod'
 import {FormControl, FormField, FormItem, FormLabel, FormMessage, } from '@/components/ui/form'
 import {useAuthStore} from "@/stores/auth.ts"
-import {useAuthTest} from "@/stores/authTest.ts"
 import {useRouter} from 'vue-router'
 import {format} from 'date-fns';
 import {es} from 'date-fns/locale';
@@ -29,17 +28,11 @@ const formSchema = toTypedSchema(z.object({
 const form = useForm({ validationSchema: formSchema });
 
 const authStore = useAuthStore();
-const authTest = useAuthTest();
 const onSubmit = form.handleSubmit(async (values) => {
   try {
-    //await authStore.Register(values);
-    await authTest.RegisterTest({
-      name: values.name,
-      email: values.email,
-      password: values.password
-    });
+    await authStore.Register(values);
     toast(`Registro exitoso: ${d}`, {
-      description: `Bienvenido: ${authTest.userTest.authUserTest}`,
+      description: `Bienvenido: ${values.name}`,
     });
     router.push('/dashboard');
   } catch (error) {

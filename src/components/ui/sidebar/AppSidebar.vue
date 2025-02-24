@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/auth.ts';
 import { useRouter } from 'vue-router'
-import {useAuthTest} from '@/stores/authTest.ts'
 
 //shadcn
 import {Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem, } from "@/components/ui/sidebar"
@@ -29,15 +28,13 @@ const items = [
 ]
 
 const authStore = useAuthStore();
-const authTest = useAuthTest();
 
 const router = useRouter();
 const userLogout = async() => {
   try{
     toast('Cerrando sesion', {
     });
-    //await authStore.Logout();
-    await authTest.Logout();
+    await authStore.Logout();
     router.push('/');
   }catch (e) {
     console.error("Error al cerrar sesión", e);
@@ -78,8 +75,7 @@ const userLogout = async() => {
       <DropdownMenu>
         <DropdownMenuTrigger as-child>
           <Button variant="ghost" class="m-2">
-<!--            {{ authStore.user.name }}-->
-            {{ authTest.userTest.authUserTest || 'Admin Prueba' }}
+            {{ authStore.user.name }}
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent class="w-auto">

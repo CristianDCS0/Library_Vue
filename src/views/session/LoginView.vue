@@ -3,7 +3,6 @@ import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
 import * as z from 'zod';
 import { useAuthStore } from '@/stores/auth.ts';
-import { useAuthTest } from '@/stores/authTest.ts';
 import {useRouter} from 'vue-router';
 import {format} from 'date-fns';
 import {es} from 'date-fns/locale';
@@ -20,7 +19,6 @@ import {LogIn} from 'lucide-vue-next'
 
 //const
 const authStore = useAuthStore();
-const authTest = useAuthTest();
 const router = useRouter();
 const d = format(new Date(), 'PPPPp', {locale:es});
 
@@ -39,17 +37,11 @@ const form = useForm({
 
 const onSubmit = form.handleSubmit(async (values) => {
   try {
-    //await authStore.Login(values);
-    if((values.email === 'admin_prueba@email.com' && values.password === 'admin123') || await authTest.LoginTest(values) ){
-      toast(`Inicio de sesion exitoso: ${d}`, {
-        description: `Bienvenido: ${authTest.userTest.authUserTest || 'Admin prueba'}`,
-      });
-      router.push('/dashboard');
-    }else{
-      toast(`Error: ${d}`,{
-        description: 'credenciales incorrectas'
-      });
-    }
+    await authStore.Login(values);
+    toast(`Inicio de sesion exitoso: ${d}`, {
+      description: `Bienvenido: ${authStore.user.name}`,
+    });
+    router.push('/dashboard');
   }catch{
     toast('Error con el servidor', {
       description: 'Error de inicio de sesión'
